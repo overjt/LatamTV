@@ -16,14 +16,13 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.UUID;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.json.*;
 public class Client {
 
     public Util util;
 
     private static String host = "https://woxitv.xyz";
-    // private static String host = "http://vps.overjt.com:4747";
+    //private static String host = "http://172.17.0.1:7878";
     private static String token_url = "/go/v/1.2/general/tk/";
     private static String channels_url = "/go/v/1.2/iptv/canales/";
 
@@ -46,7 +45,7 @@ public class Client {
         return hashMap;
     }
 
-    public HashMap<String,Object> makeRequest(String url, HashMap<String, String> body) {
+    public JSONObject makeRequest(String url, HashMap<String, String> body) {
         try {
             URL request_url = new URL(url);
             java.net.URLConnection con = request_url.openConnection();
@@ -73,15 +72,18 @@ public class Client {
                 os.write(out);
             }
 
-            // BufferedReader br = new BufferedReader(new InputStreamReader());
-            // StringBuilder sb = new StringBuilder();
-            // String line;
-            // while ((line = br.readLine()) != null) {
-            //     sb.append(line + "\n");
-            // }
-            // br.close();
-            HashMap<String,Object> result = new ObjectMapper().readValue(http.getInputStream(), HashMap.class);
-            return result;
+            BufferedReader br = new BufferedReader(new InputStreamReader(http.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            System.out.println("**********************************");
+            System.out.println(sb.toString());
+            System.out.println("**********************************");
+            
+            return new JSONObject(sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -102,8 +104,8 @@ public class Client {
             body.put("tk", Util.m16372c(this.util.mo14209e(sb.toString())));
             body.put("fecha_puntos", "0");
             body.put("uid", URLEncoder.encode(Rsa.EncryptStr(Rsa.m16415a(Client.getID())), "UTF-8"));
-            HashMap<String,Object> result = this.makeRequest(Client.host + Client.token_url, body);
-            this.token = (String) result.get("tk");
+            JSONObject result = this.makeRequest(Client.host + Client.token_url, body);
+            this.token = result.getString("tk");
         } catch (Exception e) {
 
         }
@@ -123,6 +125,7 @@ public class Client {
             sb.append(this.token);
             sb.append("?");
             sb.append(time);
+            body.put("fecha_puntos", "0");
             body.put("tk", Util.m16372c(this.util.mo14209e(sb.toString())));
             body.put("uid", URLEncoder.encode(Rsa.EncryptStr(Rsa.m16415a(Client.getID())), "UTF-8"));
             return body;
@@ -131,7 +134,7 @@ public class Client {
         }
     }
 
-    public HashMap<String,Object> getChannels() {
+    public JSONObject getChannels() {
         return this.makeRequest(Client.host + Client.channels_url, this.makeBody());
     }
 }
