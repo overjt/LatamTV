@@ -15,7 +15,9 @@ public class HelloService {
 	@Produces("text/plain")
 	public Response doGet() {
 		Client x = new Client();
-		JSONObject channels = x.getChannels();
+		//JSONObject channels = x.getChannels();
+
+		JSONObject channels = x.getChannel("456");
 
 		
 		return Response.ok(channels).build();
