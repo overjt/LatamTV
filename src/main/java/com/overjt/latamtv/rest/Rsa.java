@@ -13,8 +13,6 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-// import java.util.HashMap;
-// import java.util.Map;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -22,9 +20,7 @@ import javax.crypto.NoSuchPaddingException;
 
 public class Rsa {
 
-    private static Cipher f10698d;
-
-    // private static final Map store = new HashMap();
+    private static Cipher cipher;
 
     public Rsa() {
     }
@@ -47,9 +43,9 @@ public class Rsa {
         try {
             PublicKey g = getPublicKey("data.dat");
             Cipher instance = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            f10698d = instance;
+            cipher = instance;
             instance.init(1, g);
-            sb.append(Base64.getEncoder().encodeToString(f10698d.doFinal(str.getBytes())));
+            sb.append(Base64.getEncoder().encodeToString(cipher.doFinal(str.getBytes())));
         } catch (NoSuchAlgorithmException e) {
             System.out.println("NoSuchAlgorithmException encrypt");
         } catch (NoSuchPaddingException e2) {
@@ -68,17 +64,12 @@ public class Rsa {
 
     private static PublicKey getPublicKey(String str)
             throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
-        // PublicKey publicKey = (PublicKey) store.get("public_key");
-        // if (publicKey != null) {
-        //     return publicKey;
-        // }
         File initialFile = new File(str);
         InputStream open = new FileInputStream(initialFile);
         byte[] bArr = new byte[open.available()];
         open.read(bArr);
         open.close();
         PublicKey generatePublic = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(bArr));
-        // store.put("public_key", generatePublic);
         return generatePublic;
     }
 
