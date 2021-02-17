@@ -25,6 +25,7 @@ public class Client {
     //private static String host = "http://vps.overjt.com:7878";
     private static String token_url = "/go/v/1.2/general/tk/";
     private static String channels_url = "/go/v/1.2/iptv/canales/";
+    private static String channel_info_url = "/go/v/1.2/iptv/canal/";
     private static String firebase_uid = "qogLRU9DsaXMewbkonqS7PcRvM63";
 
     private String token = "";
@@ -136,5 +137,9 @@ public class Client {
 
     public JSONObject getChannels() {
         return this.makeRequest(Client.host + Client.channels_url, this.makeBody());
+    }
+
+    public JSONObject getChannel(String channel_id) {
+        return this.makeRequest(Client.host + Client.channel_info_url + channel_id + "/", this.makeBody());
     }
 }
