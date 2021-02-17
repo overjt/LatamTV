@@ -103,7 +103,7 @@ public class Client {
             sb.append(Client.firebase_uid);
             sb.append("?");
             sb.append(time);
-            body.put("tk", Util.m16372c(this.util.mo14209e(sb.toString())));
+            body.put("tk", Util.encodeStr(this.util.Encrypt(sb.toString())));
             body.put("fecha_puntos", "0");
             body.put("uid", URLEncoder.encode(Rsa.EncryptStr(Rsa.m16415a(Client.getID())), "UTF-8"));
             JSONObject result = this.makeRequest(Client.host + Client.token_url, body);
@@ -127,8 +127,8 @@ public class Client {
             sb.append(this.token);
             sb.append("?");
             sb.append(time);
-            body.put("tk", Util.m16372c(this.util.mo14209e(sb.toString())));
-            body.put("uid", Util.m16372c(this.util.mo14209e(Client.firebase_uid)));
+            body.put("tk", Util.encodeStr(this.util.Encrypt(sb.toString())));
+            body.put("uid", Util.encodeStr(this.util.Encrypt(Client.firebase_uid)));
             return body;
         } catch (Exception e) {
             return null;
