@@ -22,9 +22,10 @@ public class Client {
     public Util util;
 
     private static String host = "https://woxitv.xyz";
-    //private static String host = "http://172.17.0.1:7878";
+    //private static String host = "http://vps.overjt.com:7878";
     private static String token_url = "/go/v/1.2/general/tk/";
     private static String channels_url = "/go/v/1.2/iptv/canales/";
+    private static String firebase_uid = "qogLRU9DsaXMewbkonqS7PcRvM63";
 
     private String token = "";
 
@@ -79,9 +80,9 @@ public class Client {
                 sb.append(line + "\n");
             }
             br.close();
-            System.out.println("**********************************");
-            System.out.println(sb.toString());
-            System.out.println("**********************************");
+            // System.out.println("||||||||||||||||||||||||||||||||||||||||||||||||");
+            // System.out.println(sb.toString());
+            // System.out.println("||||||||||||||||||||||||||||||||||||||||||||||||");
             
             return new JSONObject(sb.toString());
         } catch (Exception e) {
@@ -98,14 +99,14 @@ public class Client {
             StringBuilder sb = new StringBuilder();
             sb.append("application/woxi");
             sb.append("?");
-            sb.append("AFT123");
+            sb.append(Client.firebase_uid);
             sb.append("?");
             sb.append(time);
             body.put("tk", Util.m16372c(this.util.mo14209e(sb.toString())));
             body.put("fecha_puntos", "0");
             body.put("uid", URLEncoder.encode(Rsa.EncryptStr(Rsa.m16415a(Client.getID())), "UTF-8"));
             JSONObject result = this.makeRequest(Client.host + Client.token_url, body);
-            this.token = result.getString("tk");
+            this.token = result.getJSONObject("OK").getString("tk");
         } catch (Exception e) {
 
         }
@@ -125,9 +126,8 @@ public class Client {
             sb.append(this.token);
             sb.append("?");
             sb.append(time);
-            body.put("fecha_puntos", "0");
             body.put("tk", Util.m16372c(this.util.mo14209e(sb.toString())));
-            body.put("uid", URLEncoder.encode(Rsa.EncryptStr(Rsa.m16415a(Client.getID())), "UTF-8"));
+            body.put("uid", Util.m16372c(this.util.mo14209e(Client.firebase_uid)));
             return body;
         } catch (Exception e) {
             return null;

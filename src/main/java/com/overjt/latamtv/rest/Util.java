@@ -107,13 +107,13 @@ public class Util {
     private static String m16374g(String str) {
         int length = 16 - (str.length() % 16);
         for (int i = 0; i < length; i++) {
-            str = str + 0;
+            str = str + "\00";
         }
         return str;
     }
 
     public byte[] mo14208d(String str) throws Exception {
-        int i = 0;
+        
         if (str == null || str.length() == 0) {
             throw new Exception("Empty string");
         }
@@ -121,6 +121,7 @@ public class Util {
             this.f10632c.init(2, this.f10631b, this.f10630a);
             byte[] doFinal = this.f10632c.doFinal(m16373f(str));
             if (doFinal.length > 0) {
+                int i = 0;
                 for (int length = doFinal.length - 1; length >= 0; length--) {
                     if (doFinal[length] == 0) {
                         i++;
