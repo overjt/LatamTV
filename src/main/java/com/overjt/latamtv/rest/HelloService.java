@@ -7,8 +7,6 @@ import org.json.JSONObject;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
-import java.util.Date;
-import java.util.HashMap;
 
 @Path("/greet")
 public class HelloService {
