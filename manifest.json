@@ -1,0 +1,15 @@
+{
+    "id": "com.overjt.latamtv",
+    "version": "1.0.0",
+    "name": "TV en latino",
+    "types": [ "tv" ],
+    "catalogs": [ { "type": "tv", "id": "tv_catalog", "name": "TV en latino" } ],
+    "resources": [
+        "catalog",
+        {
+            "name": "stream",
+            "types": [ "tv" ],
+            "idPrefixes": [ "latamtv" ]
+        }
+    ]
+}
