@@ -63,14 +63,27 @@ public class Endpoints {
 	public Response tvStream(@PathParam("channel_id") String channel_id) throws JSONException, Exception {
 		Client client = new Client();
 		JSONObject channe_info = client.getChannel(channel_id);
-
 		
-		JSONObject stream = new JSONObject();
-		stream.put("url",  new String(client.util.Decrypt(channe_info.getJSONObject("canal").getString("url_cast"))));
-		stream.put("title", channe_info.getJSONObject("canal").getString("nombre") + " | LatamTV");
+		JSONArray streams = new JSONArray();
+
+		String raw_url = new String(client.util.Decrypt(channe_info.getJSONObject("canal").getString("url")));
+		String[] urls = raw_url.split("___");
+
+		for (int i = 0; i < urls.length; i++) {
+			String stream_url = urls[i];
+			JSONObject stream = new JSONObject();
+			String title = channe_info.getJSONObject("canal").getString("nombre") + " | LatamTV";
+			if(urls.length > 1){
+				title += " Opción #" + (i + 1);
+			}
+			stream.put("url",  stream_url);
+			stream.put("title", title);
+			streams.put(stream);
+		}
+		
 
 		JSONObject response = new JSONObject();
-		response.put("streams", new JSONArray().put(stream));
+		response.put("streams", streams);
 
 
 		return Response.ok(response).build();
