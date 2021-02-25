@@ -7,4 +7,4 @@ COPY ./target/latamtv-thorntail.jar /opt/app/
 WORKDIR /opt/app/
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-Djava.net.preferIPv4Stack=true", "-jar", "/opt/app/latamtv-thorntail.jar"]
+ENTRYPOINT ["java", "-Djava.net.preferIPv4Stack=true","-Dswarm.http.port=$PORT", "-jar", "/opt/app/latamtv-thorntail.jar"]

@@ -1,1 +1,1 @@
-web: java -jar latamtv-thorntail.jar
+web: java -jar -Dswarm.http.port=$PORT latamtv-thorntail.jar
