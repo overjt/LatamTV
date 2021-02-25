@@ -1,1 +1,1 @@
-web: java -Dswarm.http.port=$PORT -jar target/latamtv-thorntail.jar
+web: java -Djava.net.preferIPv4Stack=true -Dswarm.http.port=$PORT -jar target/latamtv-thorntail.jar
