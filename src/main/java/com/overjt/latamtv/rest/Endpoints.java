@@ -52,6 +52,13 @@ public class Endpoints {
 
 	@GET
 	@Produces("text/plain")
+	@Path("/")
+	public Response index() {
+		return Response.ok("go to /manifest.json, Stremio addon").build();
+	}
+
+	@GET
+	@Produces("text/plain")
 	@Path("/stream/tv/latamtv{channel_id}.json")
 	public Response tvStream(@PathParam("channel_id") String channel_id) throws JSONException, Exception {
 		Client client = new Client();
