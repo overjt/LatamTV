@@ -1,1 +1,1 @@
-web: java -jar target/latamtv-thorntail.jar
+web: java -jar latamtv-thorntail.jar
