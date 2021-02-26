@@ -81,9 +81,6 @@ public class Client {
                 sb.append(line + "\n");
             }
             br.close();
-            // System.out.println("||||||||||||||||||||||||||||||||||||||||||||||||");
-            // System.out.println(sb.toString());
-            // System.out.println("||||||||||||||||||||||||||||||||||||||||||||||||");
             
             return new JSONObject(sb.toString());
         } catch (Exception e) {
@@ -115,7 +112,7 @@ public class Client {
 
     public HashMap<String, String> makeBody() {
 
-        if (this.token == "") {
+        if (this.token.isEmpty()) {
             this.setToken();
         }
         try {
