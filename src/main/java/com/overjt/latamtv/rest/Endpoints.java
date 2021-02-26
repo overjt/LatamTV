@@ -202,8 +202,9 @@ public class Endpoints {
 			for (int i = 0; i < urls.length; i++) {
 				String stream_url = urls[i];
 				JSONObject stream = new JSONObject();
+				String stream_title = title;
 				if (urls.length > 1) {
-					title += " Opción #" + (i + 1);
+					stream_title += " Opción #" + (i + 1);
 				}
 
 				String url_filename = "";
@@ -222,7 +223,7 @@ public class Endpoints {
 							.build().toString();
 				}
 				stream.put("url", stream_url);
-				stream.put("title", title);
+				stream.put("title", stream_title);
 				streams.put(stream);
 			}
 		}
