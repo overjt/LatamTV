@@ -41,6 +41,7 @@ public class Endpoints {
 			JSONObject channel_json = channels_array.getJSONObject(i);
 			meta_tmp.setID("latamtv" + channel_json.getString("id"));
 			meta_tmp.setName(channel_json.getString("nombre"));
+			meta_tmp.setDescription(channel_json.getString("nombre"));
 			meta_tmp.setPoster(channel_json.getString("imagen"));
 			meta_tmp.setType("tv");
 			JSONObject c = new JSONObject(meta_tmp);
@@ -48,6 +49,31 @@ public class Endpoints {
 			meta_channels.put(c);
 		}
 		response.put("metas", meta_channels);
+		response.put("cacheMaxAge", "1");
+
+
+		return Response.ok(response).build();
+	}
+
+	@GET
+	@Produces("text/plain")
+	@Path("/meta/tv/latamtv{channel_id}.json")
+	public Response meta_channel(@PathParam("channel_id") String channel_id) {
+		Client client = new Client();
+		JSONObject channe_info = client.getChannel(channel_id).getJSONObject("canal");
+
+		JSONObject meta = new JSONObject();
+		meta.put("id", "latamtv" + channe_info.getString("id"));
+		meta.put("type", "tv");
+		meta.put("name", channe_info.getString("nombre") + " | LatamTV");
+		meta.put("poster", channe_info.getString("imagen"));
+		meta.put("background", channe_info.getString("imagen"));
+		meta.put("description", channe_info.getString("nombre"));
+
+
+		JSONObject response = new JSONObject();
+		response.put("meta", meta);
+		response.put("cacheMaxAge", "1");
 
 		return Response.ok(response).build();
 	}
@@ -57,6 +83,15 @@ public class Endpoints {
 	@Path("/manifest.json")
 	public Response manifest() {
 		File f = new File("manifest.json");
+		ResponseBuilder response = Response.ok(f);
+		return response.build();
+	}
+
+	@GET
+	@Path("/media/logo.png")
+	@Produces("image/png")
+	public Response logo() {
+		File f = new File("logo.png");
 		ResponseBuilder response = Response.ok(f);
 		return response.build();
 	}
@@ -194,6 +229,7 @@ public class Endpoints {
 
 		JSONObject response = new JSONObject();
 		response.put("streams", streams);
+		response.put("cacheMaxAge", "1");
 
 		return Response.ok(response).build();
 

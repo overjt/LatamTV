@@ -6,6 +6,7 @@ public class Meta {
     private String type;
     private String name;
     private String poster;
+    private String description;
 
     public void setID(String id){
         this.id = id;
@@ -21,6 +22,10 @@ public class Meta {
         this.poster = poster;
     }
 
+    public void setDescription(String poster){
+        this.poster = poster;
+    }
+
     public String getID(){
         return this.id;
     }
@@ -33,6 +38,10 @@ public class Meta {
 
     public String getPoster(){
         return this.poster;
+    }
+
+    public String getDescription(){
+        return this.description;
     }
 
     
