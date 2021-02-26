@@ -26,6 +26,8 @@ import javax.ws.rs.QueryParam;
 @Path("/")
 public class Endpoints {
 
+	private static String SERVER_HOSTNAME = "https://c73485b8a7a2-latamtv.baby-beamup.club";
+
 	@GET
 	@Produces("text/plain")
 	@Path("/catalog/tv/tv_catalog.json")
@@ -98,7 +100,7 @@ public class Endpoints {
 		if (proxy_step != null && !proxy_step.isEmpty()) {
 			if (!proxy_step.equals("3")) {
 				String[] parts_url = url.split("/");
-				String tmp_str = "latamtv_temp" + UriBuilder.fromUri(uriInfo.getBaseUri().toString()).path("/proxy/latamtv_filename_temp")
+				String tmp_str = "latamtv_temp" + UriBuilder.fromUri(SERVER_HOSTNAME).path("/proxy/latamtv_filename_temp")
 						.queryParam("proxy_step", Integer.parseInt(proxy_step) + 1).queryParam("referer", referer)
 						.queryParam("ua", user_agent).build().toString();
 				body = body.replaceAll("(?m)^(?![http:https])(\\w.+)", tmp_str + "&url="
@@ -154,7 +156,7 @@ public class Endpoints {
 				url_filename = "";
 			}
 
-			stream_url = UriBuilder.fromUri(uriInfo.getBaseUri().toString()).path("/proxy/" + url_filename)
+			stream_url = UriBuilder.fromUri(SERVER_HOSTNAME).path("/proxy/" + url_filename)
 					.queryParam("proxy_step", "1").queryParam("url", stream_url).queryParam("ua", stream_ua)
 					.queryParam("referer", referer).build().toString();
 
@@ -178,7 +180,7 @@ public class Endpoints {
 				}
 
 				if ((stream_type.equals("0") || stream_type.equals("7")) && !stream_ua.isEmpty()) {
-					stream_url = UriBuilder.fromUri(uriInfo.getBaseUri().toString()).path("/proxy/" + url_filename)
+					stream_url = UriBuilder.fromUri(SERVER_HOSTNAME).path("/proxy/" + url_filename)
 							.queryParam("proxy_step", "1").queryParam("url", stream_url).queryParam("ua", stream_ua)
 							.queryParam("stream_type", stream_type)
 							// .queryParam("referer", "")
