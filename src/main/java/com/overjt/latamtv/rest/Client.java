@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.UUID;
+import java.util.Base64;
 
 import org.json.*;
 public class Client {
@@ -23,10 +24,13 @@ public class Client {
 
     private static String host = "https://woxitv.xyz";
     //private static String host = "http://vps.overjt.com:7878";
-    private static String token_url = "/go/v/1.2/general/tk/";
-    private static String channels_url = "/go/v/1.2/iptv/canales/";
-    private static String channel_info_url = "/go/v/1.2/iptv/canal/";
-    private static String firebase_uid = "qogLRU9DsaXMewbkonqS7PcRvM63";
+    private static String token_url = "/fun/v/1.0/general/tk/";
+    private static String channels_url = "/fun/v/1.0/iptv/canales/";
+    private static String channel_info_url = "/fun/v/1.0/iptv/canal/";
+    private static String firebase_uid = "cKcMgSvrR5SQpWDl0bgVSr";
+    private static String pkg_name = "com.app.fun.player";
+    private static String pkg_version = "1.0";
+    private static String useragent = "Dalvik/2.1.0 (Linux; U; Android 7.1.1; Moto G Play Build/MPIS24.241-15.3-7";
 
     private String token = "";
 
@@ -41,13 +45,13 @@ public class Client {
 
     public HashMap<String, String> getHeaders() {
         HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("pkg-name", EncryptStr("com.go.player"));
-        hashMap.put("version", EncryptStr("1.2"));
-        hashMap.put("User-Agent", "Dalvik/2.1.0 (Linux; U; Android 7.1.1; Moto G Play Build/MPIS24.241-15.3-7");
+        hashMap.put("pkg-name", EncryptStr(Client.pkg_name));
+        hashMap.put("version", EncryptStr(Client.pkg_version));
+        hashMap.put("User-Agent", Client.useragent);
         return hashMap;
     }
 
-    public JSONObject makeRequest(String url, HashMap<String, String> body) {
+    public JSONObject makeRequest(String url, HashMap<String, String> body, boolean decrypt) {
         try {
             URL request_url = new URL(url);
             java.net.URLConnection con = request_url.openConnection();
@@ -81,8 +85,12 @@ public class Client {
                 sb.append(line + "\n");
             }
             br.close();
-            
-            return new JSONObject(sb.toString());
+            String sb_response = sb.toString();
+            if (decrypt){
+                byte[] decodedBytes = Base64.getDecoder().decode(new String(this.util.Decrypt(sb_response)));
+                sb_response = new String(decodedBytes);
+            }
+            return new JSONObject(sb_response);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -103,7 +111,7 @@ public class Client {
             body.put("tk", Util.encodeStr(this.util.Encrypt(sb.toString())));
             body.put("fecha_puntos", "0");
             body.put("uid", URLEncoder.encode(Rsa.EncryptStr(Rsa.m16415a(Client.getID())), "UTF-8"));
-            JSONObject result = this.makeRequest(Client.host + Client.token_url, body);
+            JSONObject result = this.makeRequest(Client.host + Client.token_url, body, false);
             this.token = result.getJSONObject("OK").getString("tk");
         } catch (Exception e) {
 
@@ -133,10 +141,10 @@ public class Client {
     }
 
     public JSONObject getChannels() {
-        return this.makeRequest(Client.host + Client.channels_url, this.makeBody());
+        return this.makeRequest(Client.host + Client.channels_url, this.makeBody(), false);
     }
 
     public JSONObject getChannel(String channel_id) {
-        return this.makeRequest(Client.host + Client.channel_info_url + channel_id + "/", this.makeBody());
+        return this.makeRequest(Client.host + Client.channel_info_url + channel_id + "/", this.makeBody(), true);
     }
 }
