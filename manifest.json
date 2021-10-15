@@ -2,20 +2,20 @@
     "id": "com.overjt.latamtv",
     "version": "1.0.0",
     "name": "TV en latino",
-    "types": [ "tv" ],
-    "catalogs": [ { "type": "tv", "id": "tv_catalog", "name": "TV en latino" } ],
-    "logo": "https://c73485b8a7a2-latamtv.baby-beamup.club/media/logo.png",
+    "types": ["tv"],
+    "catalogs": [{ "type": "tv", "id": "tv_catalog", "name": "TV en latino" }],
+    "logo": "https://tvlatam.herokuapp.com/media/logo.png",
     "resources": [
         "catalog",
         {
             "name": "stream",
-            "types": [ "tv" ],
-            "idPrefixes": [ "latamtv" ]
+            "types": ["tv"],
+            "idPrefixes": ["latamtv"]
         },
         {
             "name": "meta",
-            "types": [ "tv" ],
-            "idPrefixes": [ "latamtv" ]
+            "types": ["tv"],
+            "idPrefixes": ["latamtv"]
         }
     ]
 }

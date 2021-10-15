@@ -26,7 +26,7 @@ import javax.ws.rs.QueryParam;
 @Path("/")
 public class Endpoints {
 
-	private static String SERVER_HOSTNAME = "https://c73485b8a7a2-latamtv.baby-beamup.club";
+	private static String SERVER_HOSTNAME = "https://tvlatam.herokuapp.com";
 
 	@GET
 	@Produces("text/plain")
